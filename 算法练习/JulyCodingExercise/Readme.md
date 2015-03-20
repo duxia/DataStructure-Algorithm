@@ -7,3 +7,4 @@
 * **第一章  字符串**
 - [字符串包含](StringContain.cpp)
 - [字符串转换成整数](StrToInt.cpp)
+- [最长回文子串](LongestPalindromeSubStr.cpp)
