@@ -117,11 +117,25 @@ void bubbleSort(int numarray[],int n)
                 do_swap(&numarray[j],&numarray[j+1]);
         //printArray(numarray,n);
     }*/
-    for(i=1;i<n-1;i++) {//从1开始
+    /*for(i=1;i<n-1;i++) {//从1开始
         for(j=0;j<n-i;j++)
             if(numarray[j] > numarray[j+1])
                 do_swap(&numarray[j],&numarray[j+1]);
         //printArray(numarray,n);
+    }*/
+    /*int end = n-1;//修改尾部下标
+    for(i=0;i!=end;i++) {
+    	for(j=0;j!=end;j++)
+    		if(numarray[j] > numarray[j+1])
+    			do_swap(&numarray[j],&numarray[j+1]);
+    	end = j;
+    }*/
+    int end = n;//修改尾部下标方式2
+    while(end != 0) {
+    	for(j=0;j!=end;j++)
+    		if(numarray[j] > numarray[j+1])
+    			do_swap(&numarray[j],&numarray[j+1]);
+    	end = j;
     }
 }
 void bubbleSortPro(int numarray[],int n)
