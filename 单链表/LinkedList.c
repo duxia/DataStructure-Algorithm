@@ -75,6 +75,22 @@ int GetIndexFromElem(pNode List,elemType data)
 	}
 	return 0;//未找到
 }
+//给出节点的位置，返回节点指针
+pNode GetPointerFromIndex(pNode List, int i)
+{
+	if(List==NULL || List->next==NULL || i<1)
+		return List;
+
+	int index = 1;
+	pNode p = List->next;
+	while(p) {
+		if(index == i)
+			return p;
+		p = p->next;
+		index++;
+	}
+	return NULL;
+}
 //元素插入,将元素插入第i个元素之后(i从1开始)
 int InsertElem(pNode List,elemType data,int i)
 {
@@ -151,6 +167,48 @@ void ReverseList(pNode List)
 	}
 	List->next = p;//修改头结点
 }
+//节点交换,交换i,j位置上的节点
+int ExchangeNode(pNode List,int i,int j)
+{
+	pNode p = List->next;
+	if(!p || i<1 || j<1)
+		return 0;//无数据节点
+
+	pNode prev_i = GetPointerFromIndex(List,i-1);
+	pNode prev_j = GetPointerFromIndex(List,j-1);
+	pNode pi = prev_i->next;
+	pNode pj = prev_j->next;
+	prev_i->next = pj;
+	prev_j->next = pi;
+	//经典三步交换
+	pNode tmp = pi->next;
+	pi->next = pj->next;
+	pj->next = tmp;
+	return 1;//交换成功
+}
+//单链表实现冒泡排序(交互元素,不修改节点指针)
+void BubbleSortList(pNode List)
+{
+	pNode p = List->next;
+	if(!p->next || !p)
+		return;//没有数据节点或只有一个数据节点
+	pNode q = p->next;//q记录当前节点的后继
+	pNode end = NULL;//end记录最后一个排好序的节点位置
+	while(List->next != end) {//当第一个数据节点还未排好序,则继续排序
+	    p = List->next;//每趟排序结束后,p回到第一个数据节点
+	    q = p->next;
+	    while(p->next != end) {//当p->next == end时,表示已经到达排序好的位置
+	        if(p->data > q->data) {
+	            elemType tmp = p->data;
+	            p->data = q->data;
+	            q->data = tmp;
+	        }
+	        p = q;
+	        q = q->next;
+	    }
+	    end = p;//里层循环退出时p指向本轮排序好的最后一个元素
+	}
+}
 //打印链表
 void PrintList(pNode List)
 {
@@ -192,6 +250,17 @@ int main(void) {
 
 	ReverseList(List);
 	printf("逆序后链表为:\n");
+	PrintList(List);
+
+	pNode p = GetPointerFromIndex(List,3);
+	printf("3号节点的指针为:%p,对应数据为:%d\n",p,p->data);
+
+	ExchangeNode(List,1,3);
+	printf("交换1,3节点后,链表为:\n");
+	PrintList(List);
+
+	BubbleSortList(List);
+	printf("排序后的链表为:\n");
 	PrintList(List);
 
 	DeleteList(List);
