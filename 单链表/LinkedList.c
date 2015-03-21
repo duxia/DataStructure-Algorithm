@@ -209,6 +209,61 @@ void BubbleSortList(pNode List)
 	    end = p;//里层循环退出时p指向本轮排序好的最后一个元素
 	}
 }
+//链表快排_v1(修改指针)
+pNode ListPartition(pNode pHead,pNode pEnd)
+{
+	pNode privoteNode = pHead->next;
+	elemType privoteKey = privoteNode->data;
+	//将链表划分为2个子链表,p,q分别为子链表的末尾指针
+	pNode p = pHead; //p的左侧全部<=privoteKey
+	pNode q = pHead->next; //q的左侧全部>privoteKey
+	pNode cursor = q->next;//游标初始化,用于遍历该趟链表
+	while(cursor != pEnd) {
+		if(cursor->data <= privoteKey)//当前游标对应值小于等于pK
+			p = p->next = cursor;//将当前节点放在p后,并更新p
+		else //当前游标对应值大于pK
+			q = q->next = cursor;//将当前节点放在q后,并更新q
+		cursor = cursor->next;//游标后移一位
+	}
+	//链接2个子链表
+	q->next = pEnd;
+	p->next = privoteNode;
+	return privoteNode;
+}
+void QuickSortList1(pNode pHead,pNode pEnd)
+{
+	if(pHead->next != pEnd) {
+		pNode privote = ListPartition(pHead,pEnd);
+		QuickSortList1(pHead,privote);
+		QuickSortList1(privote,pEnd);
+	}
+}
+//链表快排_v2(修改指针)
+void QuickSortList2(pNode pHead, pNode pEnd)
+{
+	if ( pHead->next == pEnd)
+		return;
+
+	pNode privoteNode = pHead->next;
+	elemType pivot = privoteNode->data;
+
+	pNode p = pHead;
+	pNode q = privoteNode;
+	pNode cursor = privoteNode->next;
+
+	while (cursor != pEnd) {
+		if (cursor->data <= pivot)
+			p = p->next = cursor;
+		else
+			q = q->next = cursor;
+		cursor = cursor->next;
+	}
+	p->next = privoteNode;
+	q->next = pEnd;
+
+	QuickSortList2(pHead, privoteNode );
+	QuickSortList2(privoteNode, pEnd );
+}
 //打印链表
 void PrintList(pNode List)
 {
@@ -226,6 +281,10 @@ int main(void) {
 	//由于List的初始化在函数内部,因此需要将地址传入,若在main中初始化,可以直接传入
 	CreateList(&List,array,6);
 	printf("初始化后当前链表为:\n");
+	PrintList(List);
+
+	QuickSortList1(List,NULL);
+	printf("第一次排序后为:\n");
 	PrintList(List);
 
 	printf("第3个元素为:\n");
@@ -250,6 +309,10 @@ int main(void) {
 
 	ReverseList(List);
 	printf("逆序后链表为:\n");
+	PrintList(List);
+
+	QuickSortList2(List,NULL);
+	printf("链表快排v2后为:\n");
 	PrintList(List);
 
 	pNode p = GetPointerFromIndex(List,3);
