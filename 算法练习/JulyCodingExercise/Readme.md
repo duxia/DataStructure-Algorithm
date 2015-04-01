@@ -9,3 +9,6 @@
  - [字符串转换成整数](StrToInt.cpp)
  - [最长回文子串](LongestPalindromeSubStr.cpp)
  - [字符串的全排列](../../排列组合/ComAndPerm.c)
+* **第二章  数组**
+ - [寻找最小的 k 个数](TopK.cpp)
+ 
